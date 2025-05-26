@@ -38,8 +38,17 @@ public class UserController {
 
     // Agregar un nuevo usuario
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        System.out.println("Nuevo");
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+
+        if (user.getEmail() == null || user.getPassword() == null) {
+            return ResponseEntity.badRequest().body("Email y contraseña son obligatorios");
+        }
+
+        // Verifica si el email ya existe
+        // if (userService.existsByEmail(user.getEmail())) {
+        //     return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo ya está registrado.");
+        // }
+
         User createdUser = userService.save(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
