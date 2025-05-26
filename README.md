@@ -19,16 +19,19 @@ Este proyecto está siendo desarrollado con las siguientes tecnologías:
 Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
 
 1. **Clona el repositorio**:
+
     ```bash
     git clone https://github.com/martin-amaro/stocker-backend.git
     ```
 
 2. **Configura el archivo `application.properties` con las credenciales de la base de datos en MySQL**:
-    ```
+
+    ```bash
     cp src/main/resources/application.properties.example src/main/resources/application.properties
     ```
 
 3. **Configura las credenciales de la base de datos en MySQL en `application.properties`**:
+
     ```bash
     spring.datasource.url=jdbc:mysql://
     spring.datasource.username=
@@ -38,4 +41,5 @@ Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
     Puedes obtener credenciales gratuitas en [Aiven](https://aiven.io/).
 
 4. **Inicia el proyecto**:
-    Abre y ejecuta `StockerApplication.java`.
+
+    Abre y ejecuta `StockerApplication.java`. Luego accede a [localhost:8080](http://localhost:8080/) desde cualquier navegador.
