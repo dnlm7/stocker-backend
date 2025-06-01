@@ -12,4 +12,7 @@ public class AuthRegisterRequest {
 
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
+
+    @NotBlank(message = "El nombre es obligatorio")
+    private String name;
 }

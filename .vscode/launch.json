@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot (con .env)",
+      "request": "launch",
+      "mainClass": "com.example.stocker.StockerApplication",
+      "projectName": "stocker", 
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

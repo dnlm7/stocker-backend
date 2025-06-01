@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.stocker.dto.AuthRegisterRequest;
 import com.example.stocker.dto.AuthRequest;
 import com.example.stocker.dto.UserResponseDTO;
 import com.example.stocker.entity.User;
@@ -53,9 +54,10 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody AuthRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody AuthRegisterRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
+        String name = request.getName();
 
         if (userService.existsByEmail(email)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo ya está registrado");
@@ -64,6 +66,7 @@ public class AuthController {
         User newUser = new User();
         newUser.setEmail(email);
         newUser.setPassword(password);
+        newUser.setName(name);
 
         User savedUser = userService.save(newUser);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
