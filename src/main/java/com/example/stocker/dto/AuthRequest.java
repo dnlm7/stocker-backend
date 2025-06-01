@@ -14,4 +14,6 @@ public class AuthRequest {
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
 
+    
+
 }
