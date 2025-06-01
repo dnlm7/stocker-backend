@@ -1,17 +1,21 @@
 package com.example.stocker.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stocker.dto.AuthRequest;
+import com.example.stocker.dto.UserResponseDTO;
 import com.example.stocker.entity.User;
 import com.example.stocker.security.JwtService;
 import com.example.stocker.service.UserService;
@@ -25,7 +29,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    private  JwtService jwtService;
+    private JwtService jwtService;
 
     public AuthController(JwtService jwtService, UserService userService) {
         this.jwtService = jwtService;
@@ -38,16 +42,14 @@ public class AuthController {
         String password = request.getPassword();
 
         return userService.findByEmail(email).map(user -> {
-        // Comparar contraseñas
-        if (user.getPassword().equals(password)) {
-            String token = jwtService.generateToken(email);
-            return ResponseEntity.ok(Map.of("token", token));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
-        }
-    }).orElseGet(() ->
-        ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("El usuario no existe")
-    );
+            // Comparar contraseñas
+            if (user.getPassword().equals(password)) {
+                String token = jwtService.generateToken(email);
+                return ResponseEntity.ok(Map.of("token", token));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
+            }
+        }).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("El usuario no existe"));
     }
 
     @PostMapping("/register")
@@ -73,6 +75,29 @@ public class AuthController {
         System.out.println("Todos los usuarios han sido eliminados");
         // Aquí podrías devolver una respuesta si lo deseas
         // return ResponseEntity.ok("Todos los usuarios han sido eliminados");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getAuthenticatedUser(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token no proporcionado o inválido");
+        }
+
+        String token = authHeader.substring(7); // Eliminar "Bearer "
+
+        String email = jwtService.validateToken(token);
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido o expirado");
+        }
+
+        Optional<User> userOpt = userService.findByEmail(email);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            UserResponseDTO dto = new UserResponseDTO(user.getId(), user.getEmail(), user.getName());
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
     }
 
 }
