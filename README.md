@@ -24,18 +24,23 @@ Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
     git clone https://github.com/martin-amaro/stocker-backend.git
     ```
 
-2. **Configura el archivo `application.properties` con las credenciales de la base de datos en MySQL**:
-
+2. **Accede a la carpeta del proyecto**:
     ```bash
-    cp src/main/resources/application.properties.example src/main/resources/application.properties
+    cd stocker-backend
     ```
 
-3. **Configura las credenciales de la base de datos en MySQL en `application.properties`**:
+2. **Genera el archivo de variables de entorno `.env`**:
 
     ```bash
-    spring.datasource.url=jdbc:mysql://
-    spring.datasource.username=
-    spring.datasource.password=
+    cp .env.example .env
+    ```
+
+3. **Configura las credenciales de la base de datos en MySQL en el archivo `.env`**:
+
+    ```bash
+    SPRING_DATASOURCE_URL=
+    SPRING_DATASOURCE_USERNAME=
+    SPRING_DATASOURCE_PASSWORD=
     ```
 
     Puedes obtener credenciales gratuitas en [Aiven](https://aiven.io/).
