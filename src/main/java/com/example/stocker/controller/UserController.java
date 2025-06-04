@@ -31,7 +31,6 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-
     @GetMapping
     public List<User> getAll() {
         System.out.println("Entró a getAll()");
@@ -64,25 +63,24 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody UserPatchDTO dto) {
-    try {
-        Optional<User> updatedUserOpt = userService.updatePartial(id, dto);
-        if (updatedUserOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> patchUser(@PathVariable Long id, @RequestBody UserPatchDTO dto) {
+        try {
+            Optional<User> updatedUserOpt = userService.updatePartial(id, dto);
+            if (updatedUserOpt.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            User updatedUser = updatedUserOpt.get();
+            String newToken = jwtService.generateToken(updatedUser.getEmail());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", updatedUser);
+            response.put("token", newToken);
+
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        User updatedUser = updatedUserOpt.get();
-        String newToken = jwtService.generateToken(updatedUser.getEmail());
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("user", updatedUser);
-        response.put("token", newToken);
-
-        return ResponseEntity.ok(response);
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
     }
-}
-
 
 }

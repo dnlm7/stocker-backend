@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stocker.dto.AuthRegisterRequest;
 import com.example.stocker.dto.AuthRequest;
+import com.example.stocker.dto.BusinessDTO;
 import com.example.stocker.dto.UserResponseDTO;
+import com.example.stocker.entity.Business;
 import com.example.stocker.entity.User;
+import com.example.stocker.repository.BusinessRepository;
 import com.example.stocker.security.JwtService;
 import com.example.stocker.service.UserService;
 
@@ -29,6 +32,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BusinessRepository businessRepository;
 
     private JwtService jwtService;
 
@@ -63,10 +69,17 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo ya está registrado");
         }
 
+        // Crear el negocio vacío
+        Business emptyBusiness = new Business();
+        emptyBusiness.setName(""); // o null si prefieres
+        Business savedBusiness = businessRepository.save(emptyBusiness);
+
+        // Crear el usuario y asociar el negocio
         User newUser = new User();
         newUser.setEmail(email);
         newUser.setPassword(password);
         newUser.setName(name);
+        newUser.setBusiness(savedBusiness);
 
         User savedUser = userService.save(newUser);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -96,7 +109,20 @@ public class AuthController {
         Optional<User> userOpt = userService.findByEmail(email);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            UserResponseDTO dto = new UserResponseDTO(user.getId(), user.getEmail(), user.getName());
+            Business business = user.getBusiness();
+
+            BusinessDTO businessDTO = null;
+            if (business != null) {
+                businessDTO = new BusinessDTO(
+                        business.getId(),
+                        business.getName(),
+                        business.getTicker(),
+                        business.getSector(),
+                        business.getIndustry(),
+                        business.getDescription());
+            }
+
+            UserResponseDTO dto = new UserResponseDTO(user.getId(), user.getEmail(), user.getName(), businessDTO);
             return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");

@@ -1,13 +1,14 @@
 package com.example.stocker.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
 @AllArgsConstructor
-public class UserResponseDTO {
+@Data
+public class BusinessDTO {
     private Long id;
-    private String email;
     private String name;
-    private BusinessDTO business;
+    private String ticker;
+    private String sector;
+    private String industry;
+    private String description;
 }

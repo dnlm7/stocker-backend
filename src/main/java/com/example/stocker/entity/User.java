@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -24,8 +25,13 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private String company;
+    // private String company;
     private String role;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id", nullable = true)
+    @JsonBackReference
+    private Business business;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
