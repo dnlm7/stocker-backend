@@ -11,4 +11,5 @@ public class BusinessDTO {
     private String sector;
     private String industry;
     private String description;
+    private String address;
 }

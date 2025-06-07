@@ -119,6 +119,7 @@ public class AuthController {
                         business.getTicker(),
                         business.getSector(),
                         business.getIndustry(),
+                        business.getAddress(),
                         business.getDescription());
             }
 

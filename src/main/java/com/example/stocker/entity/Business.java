@@ -25,6 +25,7 @@ public class Business {
     private String sector = "";
     private String industry = "";
     private String description = "";
+    private String address = "";
 
     @OneToMany(mappedBy = "business")
     @JsonManagedReference

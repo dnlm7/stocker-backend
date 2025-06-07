@@ -33,6 +33,10 @@ public class BusinessService {
             business.setIndustry(dto.getIndustry());
         }
 
+        if (dto.getAddress() != null && !dto.getAddress().isBlank()) {
+            business.setAddress(dto.getAddress());
+        }
+
 
 
         return Optional.of(businessRepository.save(business));
