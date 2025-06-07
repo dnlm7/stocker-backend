@@ -119,8 +119,8 @@ public class AuthController {
                         business.getTicker(),
                         business.getSector(),
                         business.getIndustry(),
-                        business.getAddress(),
-                        business.getDescription());
+                        business.getDescription(),
+                        business.getAddress());
             }
 
             UserResponseDTO dto = new UserResponseDTO(user.getId(), user.getEmail(), user.getName(), businessDTO);
