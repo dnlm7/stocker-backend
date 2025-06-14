@@ -25,17 +25,18 @@ Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
     ```
 
 2. **Accede a la carpeta del proyecto**:
+
     ```bash
     cd stocker-backend
     ```
 
-2. **Genera el archivo de variables de entorno `.env`**:
+3. **Genera el archivo de variables de entorno `.env`**:
 
     ```bash
     cp .env.example .env
     ```
 
-3. **Configura las credenciales de la base de datos en MySQL en el archivo `.env`**:
+4. **Configura las credenciales de la base de datos en MySQL en el archivo [`.env`](.env)**:
 
     ```bash
     SPRING_DATASOURCE_URL=
@@ -45,6 +46,6 @@ Para instalar y ejecutar el proyecto en tu máquina local, sigue estos pasos:
 
     Puedes obtener credenciales gratuitas en [Aiven](https://aiven.io/).
 
-4. **Inicia el proyecto**:
+5. **Inicia el proyecto**:
 
-    Abre y ejecuta `StockerApplication.java`. Luego accede a [localhost:8080](http://localhost:8080/) desde cualquier navegador.
+    Abre y ejecuta [`BackendApplication.java`](src\main\java\com\stocker\backend\BackendApplication.java) o cualquier archivo `.java`. Luego accede a [localhost:8080](http://localhost:8080/) desde cualquier navegador.
