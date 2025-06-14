@@ -5,8 +5,8 @@
       "type": "java",
       "name": "Spring Boot (con .env)",
       "request": "launch",
-      "mainClass": "com.example.stocker.StockerApplication",
-      "projectName": "stocker", 
+      "mainClass": "com.stocker.backend.BackendApplication",
+      "projectName": "", 
       "envFile": "${workspaceFolder}/.env"
     }
   ]
